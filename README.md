@@ -15,7 +15,7 @@ This system enables healthcare providers to:
 - npm or yarn
 
 ## Documentation
-For an overview of the system architecture and features, see the [presentation](./docs/health-information-system-presentation.pptx) in the docs directory.
+For an overview of the system architecture and features, see the [presentation](docs/health-information-system.pptx) in the docs directory.
 
 ## Getting Started
 
