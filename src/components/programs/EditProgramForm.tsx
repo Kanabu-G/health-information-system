@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Program } from '@prisma/client';
+import { useToast } from '@/contexts/ToastContext';
 
 interface EditProgramFormProps {
   program: Program;
@@ -11,6 +12,7 @@ interface EditProgramFormProps {
 
 export default function EditProgramForm({ program }: EditProgramFormProps) {
   const router = useRouter();
+  const { showToast } = useToast();
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -55,8 +57,12 @@ export default function EditProgramForm({ program }: EditProgramFormProps) {
         throw new Error(data.error || 'Failed to update program');
       }
 
-      router.push(`/programs/${program.id}`);
-      router.refresh();
+      showToast('Program updated successfully!', 'success');
+      
+      setTimeout(() => {
+        router.push(`/programs/${program.id}`);
+        router.refresh();
+      }, 1000);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unexpected error occurred');
     } finally {
