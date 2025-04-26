@@ -3,9 +3,11 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useToast } from '@/contexts/ToastContext';
 
 export default function CreateProgramForm() {
   const router = useRouter();
+  const { showToast } = useToast();
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -42,8 +44,14 @@ export default function CreateProgramForm() {
         throw new Error(data.error || 'Failed to create program');
       }
 
-      router.push('/programs');
-      router.refresh();
+      // Show success toast
+      showToast(`Program "${data.name}" created successfully!`, 'success');
+      
+      // Redirect to the programs page
+      setTimeout(() => {
+        router.push('/programs');
+        router.refresh();
+      }, 1000);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unexpected error occurred');
     } finally {
