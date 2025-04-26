@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useToast } from '@/contexts/ToastContext';
 
 interface DeleteProgramButtonProps {
   programId: string;
@@ -10,6 +11,7 @@ interface DeleteProgramButtonProps {
 
 export default function DeleteProgramButton({ programId }: DeleteProgramButtonProps) {
   const router = useRouter();
+  const { showToast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState('');
@@ -29,8 +31,12 @@ export default function DeleteProgramButton({ programId }: DeleteProgramButtonPr
         throw new Error(data.error || 'Failed to delete program');
       }
 
-      router.push('/programs');
-      router.refresh();
+      showToast('Program deleted successfully', 'success');
+      
+      setTimeout(() => {
+        router.push('/programs');
+        router.refresh();
+      }, 1000);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unexpected error occurred');
       setIsDeleting(false);
